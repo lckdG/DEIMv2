@@ -1,0 +1,1 @@
+python /app/tools/inference/onnx_inf.py

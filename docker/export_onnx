@@ -1,0 +1,1 @@
+python /app/tools/deployment/export_onnx.py
