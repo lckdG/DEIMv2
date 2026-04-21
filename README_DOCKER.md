@@ -40,5 +40,6 @@ docker run --rm \
 
 >[!NOTE]
 > Arguments in **bold** are required ones.
+>
 > To get a full list of available arguments for each command, try use them with -h or --help.
 
