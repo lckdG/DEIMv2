@@ -4,6 +4,10 @@ RUN apt-get update \
     && apt-get install dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /onnx2tf
+RUN python -m venv ./venv \
+    && ./venv/bin/pip install onnx2tf[tensorflow]
+
 WORKDIR /app
 
 COPY . .

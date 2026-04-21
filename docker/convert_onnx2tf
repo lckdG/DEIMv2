@@ -1,0 +1,8 @@
+#!/usr/local/bin/python3.12
+# -*- coding: utf-8 -*-
+import sys
+import subprocess
+if __name__ == "__main__":
+    argvs = ["/onnx2tf/venv/bin/onnx2tf", "-o", "outputs/tflite"] + sys.argv[1:]
+    output = subprocess.run(argvs)
+    sys.exit(output.returncode)
