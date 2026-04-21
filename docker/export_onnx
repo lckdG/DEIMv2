@@ -1,1 +1,8 @@
-python /app/tools/deployment/export_onnx.py
+#!/usr/local/bin/python3.12
+# -*- coding: utf-8 -*-
+import sys
+import subprocess
+if __name__ == "__main__":
+    argvs = ["python", "/app/tools/deployment/export_onnx_norm.py"] + sys.argv[1:]
+    output = subprocess.run(argvs)
+    sys.exit(output.returncode)
