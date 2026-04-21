@@ -1,0 +1,20 @@
+.git
+figures/
+
+# Volume directories
+configs/
+models/
+inputs/
+outputs/
+
+# Markdowns
+*.md
+
+# Image files
+*.ipynb
+*.jpg
+*.JPEG
+*.jpg
+*.JPG
+*.png
+*.PNG
