@@ -16,4 +16,3 @@ RUN dos2unix docker/* \
 
 RUN pip install --no-cache-dir --no-compile -r requirements_docker.txt
 
-ENTRYPOINT [ "/bin/bash" ]
