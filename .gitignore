@@ -1,5 +1,7 @@
 # Ignored Files
-outputs/
+outputs/*
+!outputs/redirect_outputs_here
+
 ckpts/
 testenv/
 backup
