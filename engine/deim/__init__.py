@@ -19,5 +19,6 @@ from .dfine_decoder import DFINETransformer
 from .rtdetrv2_decoder import RTDETRTransformerv2
 
 from .postprocessor import PostProcessor
+from .postprocessor_norm import PostProcessorNorm
 from .deim_criterion import DEIMCriterion
 from .deim_decoder import DEIMTransformer

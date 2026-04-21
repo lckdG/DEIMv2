@@ -72,15 +72,10 @@ def main(args, ):
     output_names = ['labels', 'boxes', 'scores']
     dynamic_axes = None if normalize_output else { 'images': {0: 'N', }, 'orig_target_sizes': {0: 'N'} }
 
-    if normalize_output:
-        model = ModelNorm(cfg)
-    else:
-        model = Model(cfg)
-
     img_size = cfg.yaml_cfg["eval_spatial_size"]
     data = torch.rand(1, 3, *img_size)
     size = torch.tensor([img_size])
-    _ = model(data, size)
+    _ = model(data) if normalize_output else model(data, size)
 
     export_input = (data, ) if normalize_output else (data, size)
     output_file = args.resume.replace('.pth', '.onnx') if args.resume else 'model.onnx'
