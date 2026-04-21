@@ -2,10 +2,10 @@
 figures/
 
 # Volume directories
-configs/
-models/
-inputs/
-outputs/
+configs/*
+models/*
+inputs/*
+outputs/*
 
 # Markdowns
 *.md

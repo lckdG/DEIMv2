@@ -2,6 +2,12 @@
 outputs/*
 !outputs/redirect_outputs_here
 
+inputs/*
+!inputs/place_input_images_here
+
+models/*
+!models/place_models_here
+
 ckpts/
 testenv/
 backup
