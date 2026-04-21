@@ -36,4 +36,9 @@ docker run --rm \
 |----------------|------------------------------------------------|--------------------------------------|---------------------------------------------------------------|
 | export_onnx    | **-c/--config<br>-r/--resume**<br>--check<br>--simplify | tools/deployment/export_onnx_norm.py | Export model in ONNX format, with output boxes are normalized |
 | inference_onnx | **--onnx<br>--input**                             | tools/inference/onnx_inf.py          | Run inference on ONNX model                                   |
+| convert_onnx2tf | **-i** | - | Convert ONNX model to TFLITE format |
+
+>[!NOTE]
+> Arguments in **bold** are required ones.
+> To get a full list of available arguments for each command, try use them with -h or --help.
 
