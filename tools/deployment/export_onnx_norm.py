@@ -68,6 +68,11 @@ def main(args, ):
 
     model = ModelNorm(cfg) if normalize_output else Model(cfg)
 
+    if args.fp16:
+        model.half()
+
+    model.eval()
+
     input_names = [ 'images' ] + [] if normalize_output else [ 'orig_target_sizes' ]
     output_names = ['labels', 'boxes', 'scores']
     dynamic_axes = None if normalize_output else { 'images': {0: 'N', }, 'orig_target_sizes': {0: 'N'} }
@@ -124,5 +129,6 @@ if __name__ == '__main__':
     parser.add_argument('--opset', type=int, default=17,)
     parser.add_argument('--check',  action='store_true')
     parser.add_argument('--simplify',  action='store_true')
+    parser.add_argument("--fp16", action="store_true")
     args = parser.parse_args()
     main(args)
