@@ -5,11 +5,14 @@ import sys
 import subprocess
 import random
 
+def trim(*args):
+    return [arg.strip() for arg in args]
+
 def validate_args(config, model, seed=None):
     assert os.path.isfile(config)
     assert os.path.isfile(model)
     if not seed is None:
-        assert isinstance(seed, int)
+        int(seed)
 
 def build_log_path(log_name):
     if os.path.dirname(log_name) != "logs":
@@ -18,26 +21,21 @@ def build_log_path(log_name):
 def build_run_config(raw_args):
     if len(raw_args) == 3:
         config, model, log_name = raw_args
-        validate_args(config, model)
-        log_path = build_log_path(log_name)
-
-        return dict(
-                config=config,
-                model=model,
-                log_path=log_path,
-                seed=random.randint(1000, 0xffff)
-            )
+        seed = str(random.randint(1000, 0xffff))
     else:
         config, model, log_name, seed = raw_args
-        validate_args(config, model, seed)
-        log_path = build_log_path(log_name)
 
-        return dict(
-                config=config,
-                model=model,
-                log_path=log_path,
-                seed=seed
-            )
+    config, model, log_name = trim(config, model, log_name)
+
+    validate_args(config, model, seed)
+    log_path = build_log_path(log_name)
+
+    return dict(
+            config=config,
+            model=model,
+            log_path=log_path,
+            seed=seed
+        )
 
 if __name__ == "__main__":
     run_file = sys.argv[1]
@@ -56,6 +54,7 @@ if __name__ == "__main__":
             raise Exception("Number of args must be 3 or 4: config file - checkpoint model - log file name - seed")
         else:
             run_conf = build_run_config(args)
+            print(f"Parsed config: {run_conf}")
             runs.append(run_conf)
 
     for run in runs:
@@ -70,14 +69,16 @@ if __name__ == "__main__":
                 run["seed"],
                 "-t",
                 run["model"],
-                "2>&1",
-                "|",
-                "tee",
-                run["log_path"]
             ]
 
-        output = subprocess.run(argvs)
-        if output.returncode != 0:
-            sys.exit(output.returncode)
+        with subprocess.Popen(argvs, bufsize=1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, universal_newlines=True) as p:
+            if not p.stdout is None:
+                log_file_path = run["log_path"]
+                with open(log_file_path, "w") as f:
+                    for line in p.stdout:
+                        f.write(line)
+                        print(line)
 
-    sys.exit(0)
+            if p.returncode != 0:
+                raise ChildProcessError(p.returncode, p.args)
+
