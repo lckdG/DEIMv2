@@ -1,4 +1,7 @@
 # Ignored Files
+
+!**/.gitkeep
+
 outputs/*
 !outputs/redirect_outputs_here
 
@@ -7,6 +10,8 @@ inputs/*
 
 models/*
 !models/place_models_here
+
+logs/*
 
 ckpts/
 testenv/

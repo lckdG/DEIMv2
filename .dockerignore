@@ -6,6 +6,7 @@ configs/*
 models/*
 inputs/*
 outputs/*
+logs/*
 
 # Markdowns
 *.md
