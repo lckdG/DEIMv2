@@ -62,7 +62,7 @@ if __name__ == "__main__":
         argvs = [
                 "torchrun",
                 "--master_port=7777",
-                "train.py",
+                "/app/train.py",
                 "--use-amp",
                 "-c",
                 run["config"],

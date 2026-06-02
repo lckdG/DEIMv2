@@ -12,6 +12,7 @@ WORKDIR /app
 
 COPY . .
 RUN dos2unix docker/* \
+    && chmod +x docker/* \
     && cp docker/* /usr/local/bin
 
 RUN pip install --no-cache-dir --no-compile -r requirements_docker.txt
