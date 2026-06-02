@@ -2,6 +2,7 @@
 figures/
 
 # Volume directories
+data/*
 configs/*
 models/*
 inputs/*
