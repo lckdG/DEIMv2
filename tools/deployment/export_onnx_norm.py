@@ -11,6 +11,8 @@ Copyright (c) 2023 lyuwenyu. All Rights Reserved.
 
 import os
 import sys
+import time
+import subprocess
 from typing import Any
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..'))
@@ -114,6 +116,26 @@ def main(args, ):
         onnx.save(onnx_model_simplify, output_file)
         print(f'Simplify onnx model {check}...')
 
+    if args.ort:
+        # Check if onnxruntime is present
+        import onnxruntime
+
+        parent_dir = os.path.dirname(output_file)
+        model_name = os.path.basename(output_file)
+        run = "_" + str(int(time.time()))
+
+        save_dir = os.path.join(parent_dir, model_name, run)
+
+        subprocess.run([
+            "python",
+            "-m",
+            "onnxruntime.tools.convert_onnx_models_to_ort",
+            output_file,
+            "--output_dir",
+            save_dir,
+            "--optimization_style",
+            args.ort_optimization_style
+            ])
 
 if __name__ == '__main__':
 
@@ -124,5 +146,7 @@ if __name__ == '__main__':
     parser.add_argument('--opset', type=int, default=17,)
     parser.add_argument('--check',  action='store_true')
     parser.add_argument('--simplify',  action='store_true')
+    parser.add_argument('--ort', action="store_true",)
+    parser.add_argument('--ort-optimization-style', nargs="+", default=["Runtime"], choices=["Runtime", "Fixed"])
     args = parser.parse_args()
     main(args)
