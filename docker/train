@@ -76,6 +76,6 @@ if __name__ == "__main__":
                         f.write(line)
                         print(line)
 
-            if p.returncode != 0:
+            if p.returncode and p.returncode != 0:
                 raise ChildProcessError(p.returncode, p.args)
 
