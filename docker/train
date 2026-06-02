@@ -1,0 +1,83 @@
+#!/usr/local/bin/python3.12
+# -*- coding: utf-8 -*-
+import os
+import sys
+import subprocess
+import random
+
+def validate_args(config, model, seed=None):
+    assert os.path.isfile(config)
+    assert os.path.isfile(model)
+    if not seed is None:
+        assert isinstance(seed, int)
+
+def build_log_path(log_name):
+    if os.path.dirname(log_name) != "logs":
+        return os.path.join("logs", log_name)
+
+def build_run_config(raw_args):
+    if len(raw_args) == 3:
+        config, model, log_name = raw_args
+        validate_args(config, model)
+        log_path = build_log_path(log_name)
+
+        return dict(
+                config=config,
+                model=model,
+                log_path=log_path,
+                seed=random.randint(1000, 0xffff)
+            )
+    else:
+        config, model, log_name, seed = raw_args
+        validate_args(config, model, seed)
+        log_path = build_log_path(log_name)
+
+        return dict(
+                config=config,
+                model=model,
+                log_path=log_path,
+                seed=seed
+            )
+
+if __name__ == "__main__":
+    run_file = sys.argv[1]
+
+    with open(run_file, "r") as f:
+        run_args = f.readlines()
+
+    runs = []
+    print("===================================")
+
+    for run_arg in run_args:
+        print(f"Processing line: {run_arg}")
+
+        args = run_arg.split(" ")
+        if len(args) < 3 or len(args) > 4:
+            raise Exception("Number of args must be 3 or 4: config file - checkpoint model - log file name - seed")
+        else:
+            run_conf = build_run_config(args)
+            runs.append(run_conf)
+
+    for run in runs:
+        argvs = [
+                "torchrun",
+                "--master_port=7777",
+                "train.py",
+                "--use-amp",
+                "-c",
+                run["config"],
+                "--seed",
+                run["seed"],
+                "-t",
+                run["model"],
+                "2>&1",
+                "|",
+                "tee",
+                run["log_path"]
+            ]
+
+        output = subprocess.run(argvs)
+        if output.returncode != 0:
+            sys.exit(output.returncode)
+
+    sys.exit(0)
