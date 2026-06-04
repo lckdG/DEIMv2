@@ -134,7 +134,7 @@ def main(args, ):
             "--output_dir",
             save_dir,
             "--optimization_style",
-            args.ort_optimization_style
+            " ".join(args.ort_optimization_style)
             ])
 
 if __name__ == '__main__':
